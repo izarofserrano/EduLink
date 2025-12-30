@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: edulink-postgres
+    environment:
+      POSTGRES_DB: edulink
+      POSTGRES_USER: edulink_user
+      POSTGRES_PASSWORD: edulink_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - edulink-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prebuilt
+    container_name: edulink-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/edulink
+      SPRING_DATASOURCE_USERNAME: edulink_user
+      SPRING_DATASOURCE_PASSWORD: edulink_pass
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - edulink-network
+
+volumes:
+  postgres_data:
+
+networks:
+  edulink-network:
+    driver: bridge

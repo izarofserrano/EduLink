@@ -1,0 +1,21 @@
+package com.edulink.dto.document;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class DocumentRatingDTO {
+    private Double averageRating;
+    private Long totalRatings;
+    private Integer userRating;
+}
+
+
+
