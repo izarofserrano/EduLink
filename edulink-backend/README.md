@@ -3,7 +3,7 @@
 ## Overview
 EduLink is a student-centered web application where users can upload, search and share study materials, participate in course-specific forums, and browse off-campus student activities.
 
-**Author:** Izaro Serrano
+**Author:** Izaro Fuzhi Serrano Otaduy
 
 ## Technologies Used
 - **Backend:** Java Spring Boot 3.2.0
