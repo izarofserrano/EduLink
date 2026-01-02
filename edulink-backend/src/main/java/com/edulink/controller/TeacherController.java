@@ -1,5 +1,7 @@
 package com.edulink.controller;
 
+import com.edulink.dto.teacher.CourseStatisticsDTO;
+import com.edulink.dto.teacher.TeacherCourseDTO;
 import com.edulink.service.TeacherService;
 import com.edulink.service.TeacherService.*;
 import org.springframework.beans.factory.annotation.Autowired;

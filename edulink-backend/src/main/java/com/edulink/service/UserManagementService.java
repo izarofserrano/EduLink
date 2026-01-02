@@ -30,6 +30,11 @@ public class UserManagementService {
     private final DocumentRepository documentRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Get all users
+     * @param adminUsername
+     * @return
+     */
     @Transactional(readOnly = true)
     public List<UserDTO> getAllUsers(String adminUsername) {
         logger.info("Admin {} requesting all users", adminUsername);
@@ -40,6 +45,9 @@ public class UserManagementService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get user by ID
+     */
     @Transactional(readOnly = true)
     public UserDTO getUserById(Long userId, String adminUsername) {
         logger.info("Admin {} requesting user {}", adminUsername, userId);
@@ -51,6 +59,9 @@ public class UserManagementService {
         return convertToDTO(user);
     }
 
+    /**
+     * Create new user
+     */
     public UserDTO createUser(UserCreateRequest request, String adminUsername) {
         logger.info("Admin {} creating user: {}", adminUsername, request.getUsername());
         verifyAdminAccess(adminUsername);
@@ -69,6 +80,10 @@ public class UserManagementService {
         logger.info("User created with id: {}", savedUser.getUserId());
         return convertToDTO(savedUser);
     }
+
+    /**
+     * Update user details
+     */
 
     public UserDTO updateUser(Long userId, UserUpdateRequest request, String adminUsername) {
         logger.info("Admin {} updating user {}", adminUsername, userId);
@@ -103,6 +118,9 @@ public class UserManagementService {
         return convertToDTO(savedUser);
     }
 
+    /**
+     * Delete user
+     */
     public void deleteUser(Long userId, String adminUsername) {
         logger.info("Admin {} deleting user {}", adminUsername, userId);
         verifyAdminAccess(adminUsername);
@@ -122,6 +140,10 @@ public class UserManagementService {
         logger.info("User {} deleted", userId);
     }
 
+    /**
+     * Reset user password
+     */
+
     public void resetPassword(Long userId, String newPassword, String adminUsername) {
         logger.info("Admin {} resetting password for user {}", adminUsername, userId);
         verifyAdminAccess(adminUsername);
@@ -132,6 +154,10 @@ public class UserManagementService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+
+    /**
+     * Get system statistics
+     */
 
     @Transactional(readOnly = true)
     public SystemStats getSystemStats(String adminUsername) {
@@ -148,6 +174,10 @@ public class UserManagementService {
                 .build();
     }
 
+    /**
+     * Search users by username or email
+     */
+
     @Transactional(readOnly = true)
     public List<UserDTO> searchUsers(String query, String adminUsername) {
         verifyAdminAccess(adminUsername);
@@ -158,7 +188,7 @@ public class UserManagementService {
                 .collect(Collectors.toList());
     }
 
-    // ==================== HELPER METHODS ====================
+    // Helper methods
 
     private void verifyAdminAccess(String username) {
         User user = userRepository.findByUsername(username)
@@ -169,6 +199,7 @@ public class UserManagementService {
         }
     }
 
+    // Create user entity based on role (if admin needs to create user)
     private User createUserByRole(UserCreateRequest request) {
         User user;
         String encodedPassword = passwordEncoder.encode(request.getPassword());

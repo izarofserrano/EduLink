@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Forum Reply DTO
+ */
+
 @Data
 @Builder
 @NoArgsConstructor

@@ -10,7 +10,6 @@
       <!-- Authentication Check -->
       <div v-if="!isLoggedIn" class="card">
         <div class="login-required">
-          <div class="lock-icon">🔒</div>
           <h2>Authentication Required</h2>
           <p>You must be logged in to upload documents.</p>
           <router-link to="/login" class="btn btn-primary">
@@ -22,8 +21,6 @@
       <!-- Upload Form (Only when logged in) -->
       <div v-else class="card">
         <h2 class="card-title mb-3">Upload Study Material</h2>
-        
-        
        
         <form @submit.prevent="uploadDocument">
           <!-- File Upload Area -->
@@ -276,9 +273,8 @@ export default {
         formData.append('courseId', this.form.courseId)
         formData.append('documentType', this.form.docType)
 
-        // ✅ CAMBIO IMPORTANTE: Usar /upload endpoint
         const response = await axios.post(
-          'http://localhost:8080/api/documents/upload',  // ← CAMBIAR ESTA URL
+          'http://localhost:8080/api/documents/upload',  
           formData,
           {
             headers: {
@@ -342,11 +338,6 @@ export default {
 .login-required {
   text-align: center;
   padding: 4rem 2rem;
-}
-
-.lock-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
 }
 
 .login-required h2 {

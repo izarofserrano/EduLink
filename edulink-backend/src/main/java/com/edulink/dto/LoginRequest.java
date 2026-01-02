@@ -3,6 +3,10 @@ package com.edulink.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/***
+ * Login Request DTO
+ */
+
 @Data
 public class LoginRequest {
     @NotBlank(message = "Username is required")

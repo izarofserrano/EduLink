@@ -174,8 +174,7 @@ public class ActivityService {
     }
 
 
-    // ==================== HELPER METHODS ====================
-
+    // Helper methods
 
     private ActivityDTO convertToDTO(Activity activity) {
         return ActivityDTO.builder()

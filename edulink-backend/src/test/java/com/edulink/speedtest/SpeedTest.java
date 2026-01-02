@@ -18,6 +18,11 @@ public class SpeedTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * Test speed of /actuator/health endpoint
+     * @throws Exception
+     */
+
     @Test
     public void testHealthEndpointSpeed() throws Exception {
         System.out.println("\n=== Testing Health Endpoint Speed ===");
@@ -46,6 +51,10 @@ public class SpeedTest {
         assert avgTime < 200 : "Average response time too high: " + avgTime + "ms";
     }
 
+    /**
+     * Test speed of /api/courses endpoint
+     * @throws Exception
+     */
     @Test
     public void testCoursesEndpointSpeed() throws Exception {
         System.out.println("\n=== Testing Courses Endpoint Speed ===");
@@ -74,6 +83,10 @@ public class SpeedTest {
         assert avgTime < 500 : "Average response time too high: " + avgTime + "ms";
     }
 
+    /**
+     * Test speed of /api/documents endpoint
+     * @throws Exception
+     */
     @Test
     public void testDocumentsEndpointSpeed() throws Exception {
         System.out.println("\n=== Testing Documents Endpoint Speed ===");
@@ -102,6 +115,10 @@ public class SpeedTest {
         assert avgTime < 1000 : "Average response time too high: " + avgTime + "ms";
     }
 
+    /**
+     * Test speed of /api/activities endpoint
+     * @throws Exception
+     */
     @Test
     public void testActivitiesEndpointSpeed() throws Exception {
         System.out.println("\n=== Testing Activities Endpoint Speed ===");
@@ -130,6 +147,10 @@ public class SpeedTest {
         assert avgTime < 500 : "Average response time too high: " + avgTime + "ms";
     }
 
+    /**
+     * Test speed of /api/forum/threads endpoint
+     * @throws Exception
+     */
     @Test
     public void testForumThreadsEndpointSpeed() throws Exception {
         System.out.println("\n=== Testing Forum Threads Endpoint Speed ===");

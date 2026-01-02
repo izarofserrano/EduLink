@@ -49,7 +49,7 @@ public class CourseService {
     }
 
 
-    // ==================== HELPER METHODS ====================
+    // Helper methods
 
 
     private CourseDTO convertToDTO(Course course) {

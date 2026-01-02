@@ -85,13 +85,8 @@ uploads/
 
 
 # ===========================
-# Específicos (agrega aquí)
+# Específicos 
 # ===========================
-# Ejemplo: si tienes una carpeta "documentacion_vieja"
-# documentacion_vieja/
-
-
-
 edulink-funciona*.zip
 package-lock.json
 package.json

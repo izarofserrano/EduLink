@@ -5,6 +5,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/***
+ * User Update Request DTO
+ */
+
 @Data
 public class UserUpdateRequest {
     

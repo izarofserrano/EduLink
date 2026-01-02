@@ -187,8 +187,13 @@ public class ForumService {
         logger.info("Reply {} deleted", replyId);
     }
 
-    // ==================== HELPER METHODS ====================
+    // Helper methods
 
+    /**
+     * Convert ForumThread to ForumThreadDTO
+     * @param thread
+     * @return
+     */
     private ForumThreadDTO convertToDTO(ForumThread thread) {
         boolean hasTeacherResponse = thread.getReplies().stream()
                 .anyMatch(reply -> reply.getUser().getRole() == UserRole.TEACHER);
@@ -211,6 +216,11 @@ public class ForumService {
                 .build();
     }
 
+    /**
+     * Convert ForumThread to ForumThreadDetailDTO
+     * @param thread
+     * @return
+     */
     private ForumThreadDetailDTO convertToDetailDTO(ForumThread thread) {
         boolean hasTeacherResponse = thread.getReplies().stream()
                 .anyMatch(reply -> reply.getUser().getRole() == UserRole.TEACHER);
@@ -237,6 +247,11 @@ public class ForumService {
                 .build();
     }
 
+    /**
+     * Convert ForumReply to ForumReplyDTO
+     * @param reply
+     * @return
+     */
     private ForumReplyDTO convertReplyToDTO(ForumReply reply) {
         return ForumReplyDTO.builder()
                 .replyId(reply.getReplyId())

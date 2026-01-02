@@ -1,6 +1,7 @@
 package com.edulink.controller;
 
 
+import com.edulink.dto.user.UserDTO;
 import com.edulink.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -28,9 +29,9 @@ public class UserController {
      * Get user by ID (public basic info)
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         logger.info("Request to get user with id: {}", id);
-        Map<String, Object> user = userService.getUserById(id);
+        UserDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 }

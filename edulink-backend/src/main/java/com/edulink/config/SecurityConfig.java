@@ -108,6 +108,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+    /***
+     * Authentication Provider Bean
+     * @return AuthenticationProvider   
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -116,16 +121,31 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    /***
+     * Authentication Manager Bean
+     * @param config
+     * @return
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /***
+     * Password Encoder Bean
+     * @return
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    /***
+     * CORS Configuration Source Bean
+     * @return
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

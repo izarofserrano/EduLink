@@ -23,7 +23,7 @@ public class BusinessException extends RuntimeException {
         return httpStatus;
     }
     
-    // ✅ Helper methods para casos comunes
+    // Helper methods for common cases
     public static BusinessException notFound(String message) {
         return new BusinessException(message, HttpStatus.NOT_FOUND);
     }

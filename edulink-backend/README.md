@@ -1,200 +1,279 @@
-# EduLink Backend - Interactive Web Technologies Project
+# EduLink - University Document Management Platform
 
-## Overview
-EduLink is a student-centered web application where users can upload, search and share study materials, participate in course-specific forums, and browse off-campus student activities.
+## Table of Contents
 
-**Author:** Izaro Fuzhi Serrano Otaduy
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Running Tests](#running-tests)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Technologies Used
-- **Backend:** Java Spring Boot 3.2.0
+---
+
+## Features
+
+### Student Features
+- Upload and download course documents
+- Rate documents (1-5 stars)
+- Participate in course forums
+- View and register for student activities
+- Earn reputation points
+
+### Teacher Features
+- View course statistics
+- Auto-approve uploaded documents
+- Respond to student questions
+- Create student activities
+
+### Admin Features
+- Validate pending documents
+- Manage users (CRUD operations)
+- Role management
+
+---
+
+## Tech Stack
+
+### Backend
+- **Framework:** Spring Boot 3.2.0
+- **Language:** Java 17
 - **Database:** PostgreSQL 15
-- **Authentication:** OAuth2 (configured, not yet implemented)
+- **Security:** Spring Security + JWT
 - **Build Tool:** Maven
-- **Containerization:** Docker
+
+### Frontend
+- **Framework:** Vue.js 3
+- **Build Tool:** Vite
+- **HTTP Client:** Axios
+- **Styling:** Custom CSS
+
+### DevOps
+- **Containerization:** Docker + Docker Compose
+- **CI/CD:** GitHub Actions
+- **Version Control:** Git
+
+---
+
+## Quick Start (5 Minutes)
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/izarofserrano/EduLink.git
+cd EduLink
+```
+
+### 2. Start PostgreSQL
+```bash
+cd edulink-backend
+docker-compose up -d
+```
+
+Verify PostgreSQL is running:
+```bash
+docker ps
+# Should show: edulink-postgres on port 5433
+```
+
+### 3. Start Backend
+```bash
+cd edulink-backend
+mvn spring-boot:run
+```
+
+Backend will start on: http://localhost:8080
+
+### 4. Start Frontend
+```bash
+cd edulink-frontend
+npm install
+npm run dev
+```
+
+Frontend will start on: http://localhost:3000
+
+### 5. Access the Application
+
+Open your browser: **http://localhost:3000**
+
+#### Test Credentials
+
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | `admin` | `admin123` |
+| Teacher | `Maria Garcia` | `teacher123` |
+| Student | `izarofserrano` | `student123` |
+
+---
 
 ## Project Structure
 ```
-edulink-backend/
-├── src/
-│   └── main/
-│       ├── java/com/edulink/
-│       │   ├── EdulinkApplication.java
-│       │   ├── config/
-│       │   │   └── SecurityConfig.java
-│       │   ├── controller/
-│       │   │   ├── ActivityController.java
-│       │   │   ├── CourseController.java
-│       │   │   └── DocumentController.java
-│       │   ├── model/
-│       │   │   ├── User.java
-│       │   │   ├── Student.java
-│       │   │   ├── Teacher.java
-│       │   │   ├── Admin.java
-│       │   │   ├── Course.java
-│       │   │   ├── Document.java
-│       │   │   ├── Activity.java
-│       │   │   └── enums/
-│       │   │       ├── UserRole.java
-│       │   │       └── ActivityType.java
-│       │   └── repository/
-│       │       ├── UserRepository.java
-│       │       ├── CourseRepository.java
-│       │       ├── DocumentRepository.java
-│       │       └── ActivityRepository.java
-│       └── resources/
-│           └── application.properties
-├── Dockerfile
-├── docker-compose.yml
-└── pom.xml
+EduLink/
+├── edulink-backend/          # Spring Boot backend
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/edulink/
+│   │   │   │   ├── controller/      # REST controllers
+│   │   │   │   ├── service/         # Business logic
+│   │   │   │   ├── repository/      # Data access
+│   │   │   │   ├── model/           # JPA entities
+│   │   │   │   ├── dto/             # Data transfer objects
+│   │   │   │   ├── security/        # JWT & Security config
+│   │   │   │   └── exception/       # Exception handling
+│   │   │   └── resources/
+│   │   │       └── application.properties
+│   │   └── test/
+│   ├── pom.xml
+│   └── docker-compose.yml
+│
+├── edulink-frontend/         # Vue.js frontend
+│   ├── src/
+│   │   ├── assets/           
+│   │   ├── pages/            
+│   │   ├── App.vue         
+│   │   └── main.js
+│   ├── package.json
+│   └── vite.config.js
+│
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml        # GitHub Actions CI/CD
+│
+└── README.md
 ```
 
-## Prerequisites
-- Java 17 or higher
-- Maven 3.6+
-- Docker and Docker Compose (optional, but recommended)
-- PostgreSQL 15 (if not using Docker)
+---
 
-## Setup Instructions
+## API Documentation
 
-### Option 1: Using Docker (Recommended)
+### Key Endpoints
 
-1. **Clone the repository or navigate to the project directory**
+#### Authentication
+```
+POST /api/auth/register    - Register new user
+POST /api/auth/login       - User login
+GET  /api/auth/me          - Get current user
+```
 
-2. **Build and run with Docker Compose:**
-   ```bash
-   docker-compose up --build
-   ```
+#### Documents
+```
+GET    /api/documents              - Get all documents
+POST   /api/documents/upload       - Upload document
+GET    /api/documents/{id}         - Get document details
+DELETE /api/documents/{id}         - Delete document
+POST   /api/documents/{id}/rate    - Rate document
+```
 
-3. **The application will be available at:**
-   - Backend API: http://localhost:8080
-   - PostgreSQL: localhost:5432
+#### Courses
+```
+GET /api/courses           - Get all courses
+GET /api/courses/{id}      - Get course details
+```
 
-4. **To stop the application:**
-   ```bash
-   docker-compose down
-   ```
+#### Forum
+```
+GET  /api/forum/threads           - Get all threads
+POST /api/forum/threads           - Create thread
+POST /api/forum/threads/{id}/reply - Reply to thread
+```
 
-### Option 2: Local Development
+---
 
-1. **Install PostgreSQL and create database:**
-   ```sql
-   CREATE DATABASE edulink;
-   CREATE USER edulink_user WITH PASSWORD 'edulink_pass';
-   GRANT ALL PRIVILEGES ON DATABASE edulink TO edulink_user;
-   ```
+## Running Tests
 
-2. **Update application.properties if needed** (already configured for local PostgreSQL)
-
-3. **Build the project:**
-   ```bash
-   mvn clean install
-   ```
-
-4. **Run the application:**
-   ```bash
-   mvn spring-boot:run
-   ```
-
-## API Endpoints
-
-### Courses
-- `GET /api/courses` - Get all courses
-- `GET /api/courses/{id}` - Get course by ID
-- `POST /api/courses` - Create new course
-- `PUT /api/courses/{id}` - Update course
-- `DELETE /api/courses/{id}` - Delete course
-
-### Documents
-- `GET /api/documents` - Get all documents
-- `GET /api/documents/{id}` - Get document by ID
-- `GET /api/documents/course/{courseId}` - Get documents by course
-- `POST /api/documents` - Create new document
-- `PUT /api/documents/{id}` - Update document
-- `DELETE /api/documents/{id}` - Delete document
-
-### Activities
-- `GET /api/activities` - Get all activities
-- `GET /api/activities/{id}` - Get activity by ID
-- `POST /api/activities` - Create new activity
-- `PUT /api/activities/{id}` - Update activity
-- `DELETE /api/activities/{id}` - Delete activity
-
-## Testing the API
-
-### Create a Course
+### Backend Tests
 ```bash
-curl -X POST http://localhost:8080/api/courses \
-  -H "Content-Type: application/json" \
-  -d '{
-    "courseName": "Data Structures",
-    "code": "CS201",
-    "teacherName": "Prof. Johnson",
-    "semester": 1
-  }'
+cd edulink-backend
+mvn test
 ```
 
-### Get All Courses
+#### Speed Tests
 ```bash
-curl http://localhost:8080/api/courses
+mvn test -Dtest=SpeedTest
 ```
 
-### Create an Activity
+Expected Results:
+- Health endpoint: < 200ms
+- Courses endpoint: < 500ms
+- Documents endpoint: < 1000ms
+
+
+```
+
+---
+
+## Docker Deployment
+
+### Build and Run with Docker Compose
 ```bash
-curl -X POST http://localhost:8080/api/activities \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Study Group Session",
-    "description": "Weekly study session for Data Structures",
-    "activityType": "STUDY_SESSION",
-    "attendance": 0
-  }'
+# Build images
+docker-compose build
+
+# Start all services
+docker-compose up -d
+
+# Stop all services
+docker-compose down
 ```
 
-## Database Schema
-The application uses JPA to automatically create tables based on the entity models:
-- `users` (parent table)
-- `students` (inherits from users)
-- `teachers` (inherits from users)
-- `admin` (inherits from users)
-- `courses`
-- `documents`
-- `activities`
+### Services
 
-## Security Notes
-⚠️ **Important:** For this initial version, security is disabled to facilitate testing. Before deploying to production:
-1. Enable proper authentication
-2. Configure OAuth2 providers
-3. Implement role-based access control
-4. Enable CSRF protection
-5. Use HTTPS
+| Service | Port | URL |
+|---------|------|-----|
+| Frontend | 3000 | http://localhost:3000 |
+| Backend | 8080 | http://localhost:8080 |
+| PostgreSQL | 5432 | localhost:5433 |
 
-## Next Steps
-This is a basic running version. Future enhancements will include:
-- User registration and authentication
-- OAuth2 integration (Google, etc.)
-- File upload to Amazon S3
-- Forum functionality
-- Rating system for documents
-- Advanced search and filtering
-- User profile management
-- Email notifications
+---
 
-## Troubleshooting
+## Configuration
 
-### Port already in use
-If port 8080 or 5432 is already in use, you can change them in:
-- `application.properties` for the backend port
-- `docker-compose.yml` for both ports
+### Backend (application.properties)
+```properties
+# Database
+spring.datasource.url=jdbc:postgresql://localhost:5433/edulink
+spring.datasource.username=edulink_user
+spring.datasource.password=edulink_pass
 
-### Database connection issues
-Make sure PostgreSQL is running and the credentials in `application.properties` match your database setup.
+# JWT
+jwt.secret=your-secret-key
+jwt.expiration=3600000
 
-### Build fails
-Ensure you have Java 17 and Maven installed:
-```bash
-java -version
-mvn -version
+# File Upload
+spring.servlet.multipart.max-file-size=50MB
 ```
 
-## Contact
-Created by Izaro Serrano for Interactive Web Technologies course.
+### Frontend (main.js)
+```javascript
+axios.defaults.baseURL = 'http://localhost:8080'
+```
+
+---
+
+## Database
+
+### Core Tables
+
+- `users` - User accounts
+- `students` - Student-specific data
+- `teachers` - Teacher-specific data
+- `admin` - Admin-specific data
+- `courses` - Course information
+- `documents` - Uploaded documents
+- `document_ratings` - Document ratings
+- `forum_threads` - Forum discussions
+- `forum_replies` - Forum responses
+- `activities` - Student activities
+
+---
+
+## Author
+
+**Izaro Fuzhi Serrano Otaduy**
+- GitHub: [@izarofserrano](https://github.com/izarofserrano)
+- University: Kaunas University of Technology
+
+

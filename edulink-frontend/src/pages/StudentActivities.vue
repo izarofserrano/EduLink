@@ -18,7 +18,7 @@
           + Post Activity
         </button>
         <div v-else class="login-prompt">
-          <p>🔒 Please <router-link to="/login" class="link-primary">login</router-link> to post activities</p>
+          <p>Please <router-link to="/login" class="link-primary">login</router-link> to post activities</p>
         </div>
       </div>
 
@@ -182,7 +182,7 @@
         </div>
 
         <div v-if="filteredActivities.length === 0" class="empty-state">
-          <div class="empty-icon">🎯</div>
+          <div class="empty-icon"></div>
           <p>No activities found matching your filters.</p>
           <button 
             v-if="isLoggedIn" 
@@ -335,7 +335,6 @@ export default {
     try {
       const token = localStorage.getItem('token')
 
-      // ✅ FORMATEAR LA FECHA SIN MILISEGUNDOS NI ZONA HORARIA
       const activityDate = new Date(this.newActivity.date)
       activityDate.setHours(12, 0, 0, 0) // Noon to avoid timezone issues
       
@@ -346,7 +345,7 @@ export default {
         title: this.newActivity.title,
         description: this.newActivity.description,
         activityType: this.newActivity.type,
-        activityDate: dateString,  // ✅ Sin .000Z
+        activityDate: dateString,  
         location: this.newActivity.location || 'TBD'
       }
 
@@ -370,18 +369,18 @@ export default {
       this.newActivity = { title: '', description: '', type: '', date: '', location: '' }
       this.showPostActivity = false
       
-      alert('✅ Activity posted successfully!')
+      alert('Activity posted successfully!')
       
     } catch (error) {
       console.error('Error posting activity:', error)
       console.error('Error response:', error.response?.data)
       
       if (error.response?.status === 401) {
-        alert('❌ Session expired. Please login again.')
+        alert('Session expired. Please login again.')
         this.$router.push('/login')
       } else {
         const errorMsg = error.response?.data?.error || 'Failed to post activity'
-        alert(`❌ ${errorMsg}`)
+        alert(`${errorMsg}`)
       }
     }
   },
@@ -409,15 +408,13 @@ export default {
         this.interestedActivities.push(activityId)
         activity.attendance = (activity.attendance || 0) + 1
 
-        // In real app, this would POST to API
-        // await axios.post(`/api/activities/${activityId}/interested`)
+        
       } else {
         // Remove interest
         this.interestedActivities.splice(index, 1)
         activity.attendance = Math.max(0, (activity.attendance || 0) - 1)
 
-        // In real app, this would DELETE from API
-        // await axios.delete(`/api/activities/${activityId}/interested`)
+        
       }
 
       this.saveInterestedActivities()
@@ -455,8 +452,6 @@ export default {
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
       if (diffDays === 0) return 'Today'
-      if (diffDays === 1) return 'Tomorrow'
-      if (diffDays === -1) return 'Yesterday'
       if (diffDays > 0 && diffDays <= 7) return `In ${diffDays} days`
       if (diffDays < 0 && diffDays >= -7) return `${Math.abs(diffDays)} days ago`
 

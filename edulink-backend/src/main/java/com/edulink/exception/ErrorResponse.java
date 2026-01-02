@@ -15,7 +15,7 @@ public class ErrorResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
     
-    private Map<String, String> errors; // Para validaciones
+    private Map<String, String> errors; 
     
     public ErrorResponse(int status, String message) {
         this.status = status;

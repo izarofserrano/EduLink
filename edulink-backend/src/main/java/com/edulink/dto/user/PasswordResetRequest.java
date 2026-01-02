@@ -1,5 +1,9 @@
 package com.edulink.dto.user;
 
+/***
+ * Password Reset Request DTO
+ */
+
 public class PasswordResetRequest {
     private String newPassword;
 

@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Forum Thread Detail DTO
+ */
+
 @Data
 @Builder
 @NoArgsConstructor

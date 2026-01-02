@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * User Data Transfer Object
+ */
+
 @Data
 @Builder
 @NoArgsConstructor

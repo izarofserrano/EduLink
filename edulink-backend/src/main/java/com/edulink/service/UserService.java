@@ -1,67 +1,101 @@
 package com.edulink.service;
 
 
+import com.edulink.dto.user.UserDTO;
 import com.edulink.exception.BusinessException;
 import com.edulink.model.Student;
 import com.edulink.model.User;
+import com.edulink.repository.DocumentRepository;
 import com.edulink.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
-
+/**
+ * User Service
+ * Handles user-related business logic
+ */
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserService {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-
-
     private final UserRepository userRepository;
+    private final DocumentRepository documentRepository;
 
 
     /**
      * Get public user information by ID
+     * @param userId User ID
+     * @return Public user information
+     * @throws BusinessException if user not found
      */
-    public Map<String, Object> getUserById(Long userId) {
-        logger.info("Getting user info for userId: {}", userId);
+    @Transactional(readOnly = true)
+    public UserDTO getUserById(Long userId) {
+        log.debug("Fetching user info for userId: {}", userId);
 
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> BusinessException.notFound("User not found with id: " + userId));
+        User user = findUserById(userId);
+        
+        log.debug("User found: {} (role: {})", user.getUsername(), user.getRole());
 
 
-        logger.info("User found: {} (role: {})", user.getUsername(), user.getRole());
+        return convertToUserDTO(user);
+    }
 
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("userId", user.getUserId());
-        response.put("username", user.getUsername());
-        response.put("email", user.getEmail() != null ? user.getEmail() : "");
-        response.put("role", user.getRole() != null ? user.getRole().toString() : "UNKNOWN");
-        response.put("createdAt", user.getCreatedAt());
+    // ===========================
+    // Private Helper Methods
+    // ===========================
 
 
-        // Add reputation points for students
-        if (user instanceof Student) {
-            Student student = (Student) user;
+    /**
+     * Find user by ID
+     */
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(
+                        "User not found with id: " + userId,
+                        HttpStatus.NOT_FOUND
+                ));
+    }
+
+
+    /**
+     * Convert User entity to UserDTO
+     */
+    private UserDTO convertToUserDTO(User user) {
+        UserDTO.UserDTOBuilder builder = UserDTO.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .role(user.getRole() != null ? user.getRole().name() : "UNKNOWN")
+                .createdAt(user.getCreatedAt())
+                .status("active"); // Default status
+
+
+        // Add student-specific data
+        if (user instanceof Student student) {
             Double reputation = student.getReputationPoints();
-            response.put("reputationPoints", reputation != null ? reputation : 0.0);
-            logger.info("Student reputation points: {}", reputation);
+            builder.reputationPoints(reputation != null ? reputation : 0.0);
+            
+            // Count documents uploaded by student
+            long documentCount = documentRepository.countByUploaderUserId(user.getUserId());
+            builder.documentsUploaded((int) documentCount);
+            
+            log.debug("Student {} has {} reputation points and {} documents",
+                    user.getUsername(), reputation, documentCount);
         } else {
-            response.put("reputationPoints", 0.0);
+            // Non-students don't have reputation
+            builder.reputationPoints(null); // Will be excluded from JSON due to @JsonInclude
         }
 
 
-        return response;
+        return builder.build();
     }
 }
 

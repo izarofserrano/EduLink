@@ -7,6 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.core.io.Resource;
 
+/**
+ * Document File DTO
+ */
+
 @Data
 @Builder
 @NoArgsConstructor

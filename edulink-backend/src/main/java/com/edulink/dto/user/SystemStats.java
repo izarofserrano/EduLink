@@ -1,5 +1,9 @@
 package com.edulink.dto.user;
 
+/***
+ * System Statistics DTO
+ */
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

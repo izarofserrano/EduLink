@@ -7,7 +7,7 @@
         <p class="hero-subtitle">Your Student-Centered Platform for Sharing Knowledge</p>
         <p class="hero-description">
           Connect with peers, share study materials, collaborate in course forums, 
-          and discover campus activities—all in one place.
+          and discover campus activities.
         </p>
         <div class="hero-buttons">
           <router-link to="/login" class="btn-hero btn-primary">
@@ -148,7 +148,7 @@ export default {
   margin-bottom: 1rem;
   line-height: 1.2;
   color: #2c3e50;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--accent-blue);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -130,7 +130,6 @@
 
           <div v-else class="contributions-list">
             <div class="contribution-item" v-for="doc in myDocuments" :key="doc.documentId">
-              <div class="contribution-icon">📄</div>
               <div class="contribution-content">
                 <h4>{{ doc.docTitle }}</h4>
                 <p>{{ doc.docDescription || 'No description' }}</p>
@@ -138,7 +137,6 @@
                   <span class="contribution-date">
                     <b>Uploaded:</b> {{ formatDate(doc.uploadedAt) }}
                   </span>
-                  <!-- ✅ CAMBIO: Usar courseName directamente -->
                   <span class="course-name">
                     <b>Course:</b> {{ doc.courseName || 'Unknown' }}
                   </span>
@@ -173,19 +171,19 @@
           
           <div class="contributions-list">
             <div class="contribution-item" v-for="activity in myActivities" :key="activity.activityId">
-              <div class="contribution-icon">📅</div>
+              <div class="contribution-icon"></div>
               <div class="contribution-content">
                 <h4>{{ activity.title }}</h4>
                 <p>{{ activity.description }}</p>
                 <span class="contribution-date">
-                  Created: {{ formatDate(activity.createdAt) }}
+                  Created: {{ formatDate(activity.activityDate) }}
                 </span>
                 <div class="document-meta">
                   <span class="meta-badge type">{{ activity.activityType }}</span>
                 </div>
               </div>
               <div class="contribution-stats">
-                <span>{{ activity.attendance || 0 }} interested</span>
+                <span><b>{{ activity.attendance || 0 }}</b> interested</span>
               </div>
             </div>
           </div>
@@ -236,14 +234,14 @@ export default {
       try {
         const token = localStorage.getItem('token')
         
-        // ✅ Verificar token primero
+        // Verificar token primero
         if (!token) {
           console.log('No token found, redirecting to login')
           this.$router.push('/login')
           return
         }
 
-        // ✅ Obtener info del usuario desde el backend
+        // Obtener info del usuario desde el backend
         const response = await axios.get('http://localhost:8080/api/auth/me', {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -252,7 +250,7 @@ export default {
 
         console.log('User data from backend:', response.data)
 
-        // ✅ Guardar datos del usuario
+        // Guardar datos del usuario
         this.userId = response.data.userId
         this.userName = response.data.username
         this.userEmail = response.data.email || ''
@@ -314,12 +312,12 @@ export default {
           }
         )
 
-        // ✅ Filtrar por uploaderId
+        // Filtrar por uploaderId
         this.myDocuments = response.data.filter(doc => 
           doc.uploaderId === this.userId
         )
         
-        // ✅ Formatear rating
+        // Formatear rating
         this.myDocuments = this.myDocuments.map(doc => ({
           ...doc,
           rating: doc.averageRating ? doc.averageRating.toFixed(1) : null
@@ -372,10 +370,7 @@ export default {
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
 
       if (diffDays === 0) return 'Today'
-      if (diffDays === 1) return 'Yesterday'
-      if (diffDays < 7) return `${diffDays} days ago`
-      if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
-      
+            
       return date.toLocaleDateString()
     },
 

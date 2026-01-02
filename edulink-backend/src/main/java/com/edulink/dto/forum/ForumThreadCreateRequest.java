@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/***
+ * Forum Thread Create Request DTO
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

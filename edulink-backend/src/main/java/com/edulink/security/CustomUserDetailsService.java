@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        // ✅ CREAR AUTHORITY CON EL ROL DEL USUARIO
+        // Crear authority con el rol del usuario
         List<GrantedAuthority> authorities = Collections.singletonList(
             new SimpleGrantedAuthority(user.getRole().name())  // "ADMIN", "STUDENT", "TEACHER"
         );

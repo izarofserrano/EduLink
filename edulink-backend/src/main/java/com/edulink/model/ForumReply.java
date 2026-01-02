@@ -30,7 +30,7 @@ public class ForumReply {
     private User user;
     
     @Column(nullable = false)
-    private Boolean isTeacherResponse = false;  // ✅ NUEVO
+    private Boolean isTeacherResponse = false;  
     
     @Column(nullable = false)
     private LocalDateTime createdAt;

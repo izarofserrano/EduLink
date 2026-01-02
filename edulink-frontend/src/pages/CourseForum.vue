@@ -99,7 +99,7 @@
             <div class="thread-preview">{{ truncateText(thread.content, 100) }}</div>
             <div class="thread-meta">
               <span class="meta-item">
-                {{ thread.authorUsername }}
+                Asked by <b>{{ thread.authorUsername }}</b>
                 <span v-if="thread.authorRole === 'TEACHER'" class="badge-teacher">👨‍🏫</span>
               </span>
               <span class="meta-item">
@@ -113,7 +113,7 @@
                 ✓ Resolved
               </span>
               <span v-else-if="thread.hasTeacherResponse" class="thread-status answered">
-                👨‍🏫 Answered
+                Answered
               </span>
               <span v-else class="thread-status pending">
                 ⏳ Pending
@@ -124,7 +124,6 @@
         </div>
 
         <div v-if="threads.length === 0 && !loading" class="empty-state">
-          <div class="empty-icon">💬</div>
           <p>No questions yet for this course.</p>
           <button
             v-if="isLoggedIn"
@@ -192,7 +191,7 @@
                   @click="confirmDeleteThread"
                   :disabled="submitting"
                 >
-                  🗑️ Delete
+                  Delete
                 </button>
               </div>
             </div>
@@ -271,7 +270,7 @@
             </div>
 
             <div v-else-if="threadDetail.status === 'RESOLVED'" class="resolved-notice">
-              <p>✓ This thread has been marked as resolved. No more answers can be posted.</p>
+              <p>* This thread has been marked as resolved. No more answers can be posted.</p>
             </div>
           </div>
         </div>
@@ -440,7 +439,7 @@ export default {
         await this.loadThreads()
 
 
-        alert('✅ Question posted successfully!')
+        alert('Question posted successfully!')
 
 
       } catch (error) {
@@ -503,7 +502,7 @@ export default {
         this.newAnswer = ''
 
 
-        alert('✅ Answer posted successfully!')
+        alert('Answer posted successfully!')
 
 
       } catch (error) {
@@ -546,7 +545,7 @@ export default {
 
 
         this.threadDetail.status = 'RESOLVED'
-        alert('✅ Thread marked as resolved!')
+        alert('Thread marked as resolved!')
 
 
       } catch (error) {
@@ -579,7 +578,7 @@ export default {
         )
 
 
-        alert('✅ Thread deleted successfully!')
+        alert('Thread deleted successfully!')
         this.closeThread()
         await this.loadThreads()
 
@@ -615,7 +614,7 @@ export default {
         this.threadDetail.replies = this.threadDetail.replies.filter(r => r.replyId !== replyId)
 
 
-        alert('✅ Reply deleted successfully!')
+        alert('Reply deleted successfully!')
 
 
       } catch (error) {

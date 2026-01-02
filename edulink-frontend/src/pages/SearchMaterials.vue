@@ -98,11 +98,9 @@
             </p>
 
             <div class="doc-meta">
-              <!-- ✅ CAMBIO: Usar uploaderUsername directamente -->
               <span class="meta-item">
                 <strong>Uploader:</strong> {{ doc.uploaderUsername || 'Unknown' }}
               </span>
-              <!-- ✅ CAMBIO: Usar courseName directamente -->
               <span class="meta-item">
                 <strong>Course:</strong> {{ doc.courseName || 'Unknown' }}
               </span>
@@ -156,7 +154,6 @@
           <div class="doc-section">
             <h3>Document Information</h3>
             <div class="info-grid">
-              <!-- ✅ CAMBIO: Usar campos directos del DTO -->
               <div class="info-item">
                 <label>Course:</label>
                 <span>{{ selectedDocument.courseName || 'Unknown' }}</span>
@@ -239,7 +236,6 @@
           <div class="doc-section">
             <h3>File Preview</h3>
             
-            <!-- ✅ Preview solo para PDFs aprobados -->
             <div v-if="selectedDocument.isApproved && selectedDocument.fileUrl && selectedDocument.fileUrl.toLowerCase().includes('.pdf')" class="file-preview-frame">
               <iframe
                 :src="`http://localhost:8080/api/documents/${selectedDocument.documentId}/preview`"
@@ -353,7 +349,6 @@ export default {
           return dateB - dateA
         })
         
-        // ✅ Los DTOs ya incluyen rating info
         this.documents = this.documents.map(doc => ({
           ...doc,
           rating: doc.averageRating ? doc.averageRating.toFixed(1) : 0,
@@ -432,7 +427,6 @@ export default {
       // Semester filter
       if (this.filters.semester) {
         results = results.filter(doc => {
-          // ✅ Buscar curso completo para obtener semester
           const course = this.courses.find(c => c.courseId === doc.courseId)
           return course && course.semester === parseInt(this.filters.semester)
         })
@@ -546,7 +540,7 @@ export default {
         }
 
 
-        alert(`✅ Thank you for rating this document ${rating} stars!`)
+        alert(`Thank you for rating this document ${rating} stars!`)
 
 
       } catch (error) {
@@ -642,7 +636,7 @@ export default {
         }
 
 
-        alert(`✅ Download started: ${filename}`)
+        alert(`Downloading: ${filename}`)
 
 
       } catch (error) {
